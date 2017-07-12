@@ -1,4 +1,3 @@
-from flas import Flask
 from flask_sqlalchemy import SQLAlchemy
 from application import app
 
