@@ -5,24 +5,35 @@ db = SQLAlchemy(app)
 
 
 class User(db.Model):
-    id = db.Column(db.interger, primary_key=True)
-    username = db.column(db.String(80), unique=True)
-    email = db.column(db.String(120), unique=True)
+    """ Creates users on the system """
 
-    def __init__(self, username, email):
+    __tablename__ = "users"
+
+    id = db.Column(db.Interger, primary_key=True)
+    username = db.Column(db.String(80), unique=True)
+    email = db.Column(db.String(120), unique=True)
+    password = db.Column(db.String)
+
+    def __init__(self, username, email, password):
         self.username = username
         self.email = email
+        self.password = password
 
     def __repr__(self):
         return '<User %r>' % self.username
 
 
 class bucketlist(db.Model):
-    id = db.Column(db.interger, primary_key=True)
-    Title = db.column(db.String(80))
+    id = db.Column(db.Interger, primary_key=True)
+    title = db.Column(db.String(80))
+    description = db.Column(db.String(120))
+    created_by = db.Column(db.Interger, db.ForeignKey('user.id'))
+    user = db.relationship('User')
 
-    def __init__(self, title):
+    def __init__(self, title, description, user_id):
         self.title = title
+        self.description - description
+        self.created_by = user_id
 
     def __repr__(self):
         return '<bucketlist %r>' % self.title
@@ -32,10 +43,16 @@ class item(db.Model):
     id = db.Column(db.interger, primary_key=True)
     title = db.column(db.STring(80))
     decsription = db.Column(db.String(120))
+    bucket_id = db.Column(db.Interger, db.ForeignKey('bucketlist.id'))
+    bucketlist = db.relationship('bucketlist')
+    created_by = db.Column(db.Interger, db.ForeignKey("user.id"))
+    user = db.relationship('User')
 
-    def __init__(self, title, description):
+    def __init__(self, title, description, bucket_id, user_id):
         self.title = title
         self.description = description
+        self.bucket_id = bucket_id
+        self.created_by = user_id
 
     def __repr__(self):
         return '<item %r>' % self.title
