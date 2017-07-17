@@ -1,7 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from application import app
-
-db = SQLAlchemy(app)
+from application import app, db
 
 
 class User(db.Model):
@@ -47,7 +45,7 @@ class item(db.Model):
     """ Creates bucketlist items """
 
     __tablename__ = 'items'
-    
+
     id = db.Column(db.interger, primary_key=True)
     title = db.column(db.STring(80))
     decsription = db.Column(db.String(120))

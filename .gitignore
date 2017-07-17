@@ -1,1 +1,3 @@
 bc-venv
+.DS_Store
+*.pyc
