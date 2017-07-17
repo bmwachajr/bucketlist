@@ -24,6 +24,10 @@ class User(db.Model):
 
 
 class bucketlist(db.Model):
+    """ creates bucket lists """
+
+    __tablename__ = 'bucketlists'
+
     id = db.Column(db.Interger, primary_key=True)
     title = db.Column(db.String(80))
     description = db.Column(db.String(120))
@@ -40,6 +44,10 @@ class bucketlist(db.Model):
 
 
 class item(db.Model):
+    """ Creates bucketlist items """
+
+    __tablename__ = 'items'
+    
     id = db.Column(db.interger, primary_key=True)
     title = db.column(db.STring(80))
     decsription = db.Column(db.String(120))
