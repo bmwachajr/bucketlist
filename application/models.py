@@ -7,7 +7,7 @@ class User(db.Model):
 
     __tablename__ = "users"
 
-    id = db.Column(db.Interger, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True)
     email = db.Column(db.String(120), unique=True)
     password = db.Column(db.String)
@@ -26,11 +26,11 @@ class bucketlist(db.Model):
 
     __tablename__ = 'bucketlists'
 
-    id = db.Column(db.Interger, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(80))
     description = db.Column(db.String(120))
-    created_by = db.Column(db.Interger, db.ForeignKey('user.id'))
-    user = db.relationship('User')
+    created_by = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship('users')
 
     def __init__(self, title, description, user_id):
         self.title = title
@@ -46,12 +46,12 @@ class item(db.Model):
 
     __tablename__ = 'items'
 
-    id = db.Column(db.interger, primary_key=True)
-    title = db.column(db.STring(80))
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.column(db.String(80))
     decsription = db.Column(db.String(120))
-    bucket_id = db.Column(db.Interger, db.ForeignKey('bucketlist.id'))
-    bucketlist = db.relationship('bucketlist')
-    created_by = db.Column(db.Interger, db.ForeignKey("user.id"))
+    bucket_id = db.Column(db.Integer, db.ForeignKey('bucketlists.id'))
+    bucketlist = db.relationship('bucketlists')
+    created_by = db.Column(db.Integer, db.ForeignKey("users.id"))
     user = db.relationship('User')
 
     def __init__(self, title, description, bucket_id, user_id):
