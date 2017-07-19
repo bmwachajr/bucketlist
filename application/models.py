@@ -46,6 +46,5 @@ class Item(db.Model):
     date_modified = db.Column(db.DateTime, onupdate=datetime.now)
     bucketlist_id = db.Column(db.Integer, db.ForeignKey('bucketlists.id'))
 
-
     def __repr__(self):
         return '<item %r>' % self.title

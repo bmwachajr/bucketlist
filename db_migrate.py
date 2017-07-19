@@ -1,9 +1,10 @@
 #!bc-venv/bin/python
 import imp
 from migrate.versioning import api
-from application import db
-from config import SQLALCHEMY_DATABASE_URI
-from config import SQLALCHEMY_MIGRATE_REPO
+from application import db, app
+
+SQLALCHEMY_DATABASE_URI = app.config.get('SQLALCHEMY_DATABASE_URI')
+SQLALCHEMY_MIGRATE_REPO = app.config.get('SQLALCHEMY_MIGRATE_REPO')
 
 # Current database version, migrate to next version v + 1
 v = api.db_version(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO)
