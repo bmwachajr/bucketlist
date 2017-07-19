@@ -4,3 +4,4 @@ bc-venv
 application/__init__.pyc
 app.db
 db_repo
+databases
