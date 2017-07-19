@@ -1,6 +1,5 @@
 #!bc-venv/bin/python
 from migrate.versioning import api
-from migrate.exceptions import DatabaseAlreadyControlledError
 from config import SQLALCHEMY_DATABASE_URI
 from config import SQLALCHEMY_MIGRATE_REPO
 from application import db
@@ -13,4 +12,4 @@ if not os.path.exists(SQLALCHEMY_MIGRATE_REPO):
     api.version_control(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO)
 else:
     print("Database already exists")
-    #api.version_control(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO, api.version(SQLALCHEMY_MIGRATE_REPO))
+    # api.version_control(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO, api.version(SQLALCHEMY_MIGRATE_REPO))
