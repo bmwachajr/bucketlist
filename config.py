@@ -16,8 +16,8 @@ class Config(object):
 class Development(Config):
     """ Development Configuration """
 
-    DEBUG = True
-    TESTING = True
+    DEBUG = False
+    TESTING = False
     SQLALCHEMY_TRACK_MODIFICATIONS = 'False'
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + \
         os.path.join(basedir, 'databases/development.db')

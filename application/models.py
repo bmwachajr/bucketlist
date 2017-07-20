@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from application import app, db
-from datetime import datetime
+from sqlalchemy.sql import func
 
 
 class User(db.Model):
@@ -26,8 +26,8 @@ class Bucketlist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80))
     created_by = db.Column(db.Integer, db.ForeignKey('users.email'))
-    date_created = db.Column(db.DateTime, default=datetime.now)
-    date_modified = db.Column(db.DateTime, onupdate=datetime.now)
+    date_created = db.Column(db.DateTime, server_default=func.now())
+    date_modified = db.Column(db.DateTime, server_onupdate=func.now())
     items = db.relationship('Item', backref='bucketlist', lazy='dynamic')
 
     def __repr__(self):
@@ -42,8 +42,8 @@ class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     description = db.column(db.String(120))
     is_done = False
-    date_created = db.Column(db.DateTime, default=datetime.now)
-    date_modified = db.Column(db.DateTime, onupdate=datetime.now)
+    date_created = db.Column(db.DateTime, server_default=func.now())
+    date_modified = db.Column(db.DateTime, server_onupdate=func.now())
     bucketlist_id = db.Column(db.Integer, db.ForeignKey('bucketlists.id'))
 
     def __repr__(self):

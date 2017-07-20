@@ -2,6 +2,5 @@ bc-venv
 .DS_Store
 *.pyc
 application/__init__.pyc
-app.db
-db_repo
-databases
+databases/*
+db_repo/*
