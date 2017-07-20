@@ -33,6 +33,6 @@ in development environment.
 
 * run development server:
 
-        $ ./manrunserver
+        $ ./manage.py runserver
 
 The site should now be running at `http://localhost:5080`
