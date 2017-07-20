@@ -26,13 +26,13 @@ in development environment.
 
         $ pip install -r healthchecks/requirements.txt
 
-* create database tables, triggers, superuser:
+* create database tables
 
-        $ ./db_create.py
-        $ ./db_migrate.py 
-        
+        $ ./manage.py create
+        $ ./manage.py migrate
+
 * run development server:
 
-        $ ./run.py
+        $ ./manage.py runserver
 
 The site should now be running at `http://localhost:5080`
