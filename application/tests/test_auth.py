@@ -23,7 +23,7 @@ class AuthTestCase(BaseTest):
         json_output = json.loads(response.data)
         self.assertIn(json_output['message'], "successfully Registered User")
 
-    def test_invalid_user_registrattion(self):
+    def test_invalid_user_registration(self):
         """ Test that a user cannot register with invalid email or username """
         # new user with invalid username or email
         invalid_user = {
@@ -35,7 +35,7 @@ class AuthTestCase(BaseTest):
         response = self.client.post(url, data=invalid_user)
         self.assertEqual(response.status_code, 400)
 
-        json_output = json.loada(response.data)
+        json_output = json.loads(response.data)
         self.assertIn(json_output['message'], 'invalid username or email')
 
     def test_registration_invalid_keys(self):
