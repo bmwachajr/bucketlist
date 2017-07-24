@@ -19,7 +19,7 @@ class AuthTestCase(BaseTest):
         response = self.client.post(url, data=test_user)
         self.assertEqual(response.status_code, 201)
 
-        self.assertIn(self.register_test_user['username'], response.data)
+        self.assertIn(test_user['username'], response.data)
         json_output = json.loads(response.data)
         self.assertIn(json_output['message'], "successfully Registered User")
 
@@ -33,10 +33,21 @@ class AuthTestCase(BaseTest):
         url = '/auth/register'
 
         response = self.client.post(url, data=invalid_user)
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 400)
 
         json_output = json.loada(response.data)
         self.assertIn(json_output['message'], 'invalid username or email')
+
+    def test_registration_invalid_keys(self):
+        """ test registering a user using invalid keys """
+        user = {'key1': "henry",
+                'key2': 'password',
+                'key3': 'henry@example.com'}
+
+        url = '/auth/register'
+
+        response = self.client.post(url, data=user)
+        self.assertEqual(response.status_code, 400)
 
     def test_user_login(self):
         """ Test that a user can login successfully """
@@ -46,7 +57,7 @@ class AuthTestCase(BaseTest):
         response = self.client.post(url, data=user)
 
         # looged in user is redirected to dashboard
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 202)
         self.assertEqual(self.client.current_user.username, 'test_user')
 
     def test_invalid_username_login_attempt(self):
@@ -55,7 +66,7 @@ class AuthTestCase(BaseTest):
         url = '/auth/login'
 
         response = self.client.post(url, data=invalid_username)
-        self.assertEqual(response.status_code, 302)  # status code for invalid
+        self.assertEqual(response.status_code, 401)  # status code for invalid
         json_output = json.loads(response.data)
         self.assertIn(json_output['message'], 'Invalid username or password')
         self.assertEqual(self.client.current_user, None)
@@ -66,7 +77,7 @@ class AuthTestCase(BaseTest):
         url = '/auth/login'
 
         response = self.client.post(url, data=invalid_password)
-        self.assertEqual(response.status_code, 302)  # status code for invalid
+        self.assertEqual(response.status_code, 401)  # status code for invalid
         json_output = json.loads(response.data)
         self.assertIn(json_output['message'], 'Invalid username or password')
         self.assertEqual(self.client.current_user, None)
