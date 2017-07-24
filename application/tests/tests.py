@@ -1,5 +1,6 @@
 from flask_testing import TestCase
-
+from flask import current_app
+import nose
 from application import app, db
 import config
 
@@ -11,9 +12,12 @@ class BaseTest(TestCase):
 
     def setUp(self):
         """ create test database and client """
-        self.client = self.app.test_client()
+        self.client = current_app.test_client()
         db.create_all()
-        #manage.create()
-        print('Created db')
+
+    def tearDown(self):
         db.drop_all()
-        print('droped bd')
+
+
+if __name__ == "__main__":
+    nose.run()
