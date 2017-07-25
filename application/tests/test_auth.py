@@ -68,8 +68,17 @@ class AuthTestCase(BaseTest):
         response = self.client.post(url, data=user)
 
         # looged in user is redirected to dashboard
-        self.assertEqual(response.status_code, 202)
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(self.client.current_user.username, 'test_user')
+
+    def test_login_empty_data(self):
+        """ test submitting empty data """
+        user = {'username': '', 'password': ''}
+        url = '/auth/login'
+
+        response =  self.client.post(url, data=user)
+        self.assertEqual(response.status_code, 401)
+        self.assertIn('Provide both username and password', response.data.decode())
 
     def test_invalid_username_login_attempt(self):
         """ Test user login with invalid username """

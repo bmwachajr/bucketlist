@@ -46,7 +46,7 @@ class Login(Resource):
 
         # validate form data
         if not username or not password:
-            return "Provide  both username and password", 401
+            return "Provide both username and password", 401
 
         #Check that the user is Registered
         user = User.query.filter_by(username=username, password=password).first()
@@ -57,4 +57,4 @@ class Login(Resource):
         auth_token = generate_auth(user)
 
         # Return auth token
-        return auth_token, 202
+        return auth_token, 200
