@@ -11,13 +11,14 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + \
         os.path.join(basedir, '/databases/app.db')
     SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repo')
+    SECRET_KEY = "WK,gf#8V:y]ZzROB*mKjtOtu!PU:Fi"
 
 
 class Development(Config):
     """ Development Configuration """
 
-    DEBUG = False
-    TESTING = False
+    DEBUG = True
+    TESTING = True
     SQLALCHEMY_TRACK_MODIFICATIONS = 'False'
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + \
         os.path.join(basedir, 'databases/development.db')
