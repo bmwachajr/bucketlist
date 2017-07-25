@@ -2,7 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api
 import config
-from . import resource_urls
+
 
 # set application environment
 environment = 'development'
@@ -20,5 +20,5 @@ db = SQLAlchemy(app)
 api = Api(app=app)
 
 
-from . import views, models,  resource_urls
+from . import resource_urls
 resource_urls.load_urls(api)

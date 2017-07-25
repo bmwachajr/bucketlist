@@ -18,10 +18,7 @@ class AuthTestCase(BaseTest):
 
         response = self.client.post(url, data=test_user)
         self.assertEqual(response.status_code, 201)
-
-        self.assertIn(test_user['username'], response.data)
-        json_output = json.loads(response.data)
-        self.assertIn(json_output['message'], "successfully Registered User")
+        self.assertIn("Successfully Registered User", response.data.decode())
 
     def test_duplicate_user_registration(self):
         """ Test cannot register a duplicate email or useername """

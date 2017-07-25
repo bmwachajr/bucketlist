@@ -14,6 +14,15 @@ class User(db.Model):
     password = db.Column(db.String)
     bucketlists = db.relationship('Bucketlist', backref='author', lazy='dynamic')
 
+    def set_password(self, password):
+        """ hash and set the new users password """
+        self.password = password
+
+    def save(self):
+        """ Save a user into the database """
+        db.session.add(self)
+        db.session.commit()
+
     def __repr__(self):
         return '<User %r>' % self.username
 
