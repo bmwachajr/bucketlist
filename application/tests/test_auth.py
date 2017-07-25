@@ -77,32 +77,39 @@ class AuthTestCase(BaseTest):
         url = '/auth/login'
 
         response = self.client.post(url, data=invalid_username)
-        self.assertEqual(response.status_code, 401)  # status code for invalid
-        json_output = json.loads(response.data)
-        self.assertIn(json_output['message'], 'Invalid username or password')
-        self.assertEqual(self.client.current_user, None)
+        self.assertEqual(response.status_code, 401)
+        self.assertIn('unregistered user', response.data.decode())
 
     def test_invalid_password_login_attempt(self):
         """ Test user login with invalid password """
+
         invalid_password = {'username': 'test_user', 'password': 'invalid'}
         url = '/auth/login'
 
         response = self.client.post(url, data=invalid_password)
-        self.assertEqual(response.status_code, 401)  # status code for invalid
-        json_output = json.loads(response.data)
-        self.assertIn(json_output['message'], 'Invalid username or password')
-        self.assertEqual(self.client.current_user, None)
+        self.assertEqual(response.status_code, 401)
+        self.assertIn('Invalid username or password', response.data.decode())
 
     def test_user_logout(self):
         """ Test successfull user logout """
         # login user
         user = {'username': 'test_user', 'password': 'password'}
         url = '/auth/login'
+
         response = self.client.post(url, data=user)
-        self.assertEqual(self.client.current_user.username, 'test_user')
+        self.assertEqual(self.client.auth_token, None)
 
         # logout user
         url = '/auth/logout'
         response = self.client.get(url)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(self.client.current_user, None)
+        self.assertEqual(self.client.auth_token, None)
+
+    def test_login_unregistered_user(self):
+        """ Test login an unregistered nuser """
+        user = {'username': 'unregistered', 'password': 'password'}
+        url = '/auth/login'
+
+        response = self.client.post(url, data=user)
+        self.assertEqual(response.status_code, 401)
+        self.assertIn("unregistered user", response.data.decode())

@@ -18,7 +18,7 @@ def create_application(environment):
 app = create_application(environment)
 db = SQLAlchemy(app)
 api = Api(app=app)
+SECRET_KEY = app.config.get('SECRET_KEY')
 
-
-from . import resource_urls
+from . import resource_urls, views
 resource_urls.load_urls(api)

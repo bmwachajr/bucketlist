@@ -12,6 +12,7 @@ class BaseTest(TestCase):
     def setUp(self):
         """ create test database and client """
         self.client = app.test_client()
+        SECRET_KEY = app.config.get("DEBUG")
         db.create_all()
 
     def tearDown(self):

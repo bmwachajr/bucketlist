@@ -38,4 +38,27 @@ class Register(Resource):
 
 
 class Login(Resource):
-    pass
+    def post(self):
+        """ Loging a registered user """
+        # Get form data
+        username = request.form['username']
+        password = request.form['password']
+
+        # validate form data
+        if not username or not password:
+            return "Provide  both username and password", 401
+
+        #Check that the user is Registered
+        user = User.query.filter_by(username=username).first()
+        if not user:
+            return "unregistered user", 401
+
+        #Check password matches else’incorrect password’
+        if user.password != User.confirm_password(password):
+            return "Invalid username or password", 401
+
+        #generate auth token
+        auth_token = generate_auth(user)
+
+        # Return auth token
+        return auth_token, 202
