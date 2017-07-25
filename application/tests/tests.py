@@ -2,6 +2,7 @@ from flask_testing import TestCase
 import nose
 from application import app, db
 import config
+from application.models import User
 
 
 class BaseTest(TestCase):
@@ -12,8 +13,12 @@ class BaseTest(TestCase):
     def setUp(self):
         """ create test database and client """
         self.client = app.test_client()
-        SECRET_KEY = app.config.get("DEBUG")
+        SECRET_KEY = app.config.get("SECRET_KEY")
         db.create_all()
+
+        default_user = User(username="default_user", email="Default@example.com", password="password")
+        db.session.add(default_user)
+        db.session.commit()
 
     def tearDown(self):
         db.drop_all()

@@ -78,12 +78,12 @@ class AuthTestCase(BaseTest):
 
         response = self.client.post(url, data=invalid_username)
         self.assertEqual(response.status_code, 401)
-        self.assertIn('unregistered user', response.data.decode())
+        self.assertIn('Invalid username or password', response.data.decode())
 
     def test_invalid_password_login_attempt(self):
         """ Test user login with invalid password """
 
-        invalid_password = {'username': 'test_user', 'password': 'invalid'}
+        invalid_password = {'username': 'default_user', 'password': 'invalid'}
         url = '/auth/login'
 
         response = self.client.post(url, data=invalid_password)
@@ -106,10 +106,10 @@ class AuthTestCase(BaseTest):
         self.assertEqual(self.client.auth_token, None)
 
     def test_login_unregistered_user(self):
-        """ Test login an unregistered nuser """
+        """ Test login an unregistered user """
         user = {'username': 'unregistered', 'password': 'password'}
         url = '/auth/login'
 
         response = self.client.post(url, data=user)
         self.assertEqual(response.status_code, 401)
-        self.assertIn("unregistered user", response.data.decode())
+        self.assertIn("Invalid username or password", response.data.decode())
