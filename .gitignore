@@ -4,3 +4,5 @@ bc-venv
 application/__init__.pyc
 databases/*
 db_repo/*
+.idea
+.coverage
