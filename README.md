@@ -28,8 +28,8 @@ in development environment.
 
 * create database tables
 
-        $ ./manage.py create
-        $ ./manage.py migrate
+        $ python manage.py create
+        $ python manage.py migrate
 
 * run development server:
 
