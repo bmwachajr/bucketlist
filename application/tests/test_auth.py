@@ -97,7 +97,7 @@ class AuthTestCase(BaseTest):
 
         response = self.client.post(url, data=invalid_password)
         self.assertEqual(response.status_code, 401)
-        self.assertIn('Invalid username or password', response.data.decode())
+        self.assertIn('Invalid Password', response.data.decode())
 
     def test_user_logout(self):
         """ Test successfull user logout

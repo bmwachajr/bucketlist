@@ -49,11 +49,16 @@ class Login(Resource):
             return "Provide both username and password", 401
 
         #Check that the user is Registered
-        user = User.query.filter_by(username=username, password=password).first()
+        user = User.query.filter_by(username=username).first()
         if not user:
             return "Invalid username or password", 401
 
-        #generate auth token
+        #  Check password
+        if not user.check_password(password):
+            print(password)
+            print(user.password)
+            return "Invalid Password", 401
+        # generate auth token
         auth_token = 'auth_token'
 
         # Return auth token

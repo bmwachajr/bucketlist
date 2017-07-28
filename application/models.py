@@ -17,7 +17,12 @@ class User(db.Model):
 
     def set_password(self, password):
         """ hash and set the new users password """
-        self.password = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
+        hashed_password = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
+        self.password = hashed_password
+
+    def check_password(self, password):
+        """ Check user password at login """
+        return True if bcrypt.checkpw(password.encode(), self.password) else False
 
     def save(self):
         """ Save a user into the database """

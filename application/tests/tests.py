@@ -16,7 +16,8 @@ class BaseTest(TestCase):
         SECRET_KEY = app.config.get("SECRET_KEY")
         db.create_all()
 
-        default_user = User(username="default_user", email="Default@example.com", password="password")
+        default_user = User(username="default_user", email="Default@example.com")
+        default_user.set_password(password="password")
         db.session.add(default_user)
         db.session.commit()
 
