@@ -54,7 +54,7 @@ class Login(Resource):
             return "Invalid username or password", 401
 
         #generate auth token
-        auth_token = generate_auth(user)
+        auth_token = 'auth_token'
 
         # Return auth token
         return auth_token, 200

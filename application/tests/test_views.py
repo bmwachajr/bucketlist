@@ -7,4 +7,4 @@ class TestViews(BaseTest):
         """ test the index view """
         url = '/'
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 209)
+        self.assertEqual(response.status_code, 200)
