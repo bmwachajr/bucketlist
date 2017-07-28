@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from application import app, db
 from sqlalchemy.sql import func
+import bcrypt
 
 
 class User(db.Model):
@@ -16,7 +17,7 @@ class User(db.Model):
 
     def set_password(self, password):
         """ hash and set the new users password """
-        self.password = password
+        self.password = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
 
     def save(self):
         """ Save a user into the database """
