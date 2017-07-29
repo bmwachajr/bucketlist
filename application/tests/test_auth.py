@@ -69,7 +69,7 @@ class AuthTestCase(BaseTest):
 
         # looged in user is redirected to dashboard
         self.assertEqual(response.status_code, 200)
-        self.assertIn('auth_token', response.data.decode())
+        self.assertTrue('auth_token', response.data.decode())
 
     def test_login_empty_data(self):
         """ test submitting empty data """

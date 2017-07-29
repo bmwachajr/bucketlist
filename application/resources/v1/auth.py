@@ -59,7 +59,7 @@ class Login(Resource):
             print(user.password)
             return "Invalid Password", 401
         # generate auth token
-        auth_token = 'auth_token'
+        auth_token = user.generate_auth()
 
         # Return auth token
         return auth_token, 200

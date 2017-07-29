@@ -1,7 +1,10 @@
 from flask_sqlalchemy import SQLAlchemy
-from application import app, db
+from application import app, db, SECRET_KEY
 from sqlalchemy.sql import func
 import bcrypt
+import jwt
+from datetime import datetime, timedelta
+
 
 
 class User(db.Model):
@@ -23,6 +26,17 @@ class User(db.Model):
     def check_password(self, password):
         """ Check user password at login """
         return True if bcrypt.checkpw(password.encode(), self.password) else False
+
+    def generate_auth(self):
+        """ generate authentication token """
+        payload = {'id': self.id,
+                   'exp': datetime.utcnow() + timedelta(seconds=600),
+                   "iat": datetime.utcnow()
+                   }
+
+        # encode payload
+        auth_token = jwt.encode(payload, SECRET_KEY).decode()
+        return auth_token
 
     def save(self):
         """ Save a user into the database """
