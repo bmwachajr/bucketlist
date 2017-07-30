@@ -76,7 +76,7 @@ class AuthTestCase(BaseTest):
         user = {'username': '', 'password': ''}
         url = '/auth/login'
 
-        response =  self.client.post(url, data=user)
+        response = self.client.post(url, data=user)
         self.assertEqual(response.status_code, 401)
         self.assertIn('Provide both username and password', response.data.decode())
 

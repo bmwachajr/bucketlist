@@ -35,7 +35,9 @@ class User(db.Model):
                    }
 
         # encode payload
-        auth_token = jwt.encode(payload, SECRET_KEY).decode()
+        auth_token = {
+                    'auth_token': jwt.encode(payload, SECRET_KEY).decode()
+                      }
         return auth_token
 
     def save(self):
