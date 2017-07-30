@@ -7,3 +7,4 @@ db_repo/*
 .idea
 .coverage
 cover
+application/mixins.py
