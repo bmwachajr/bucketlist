@@ -48,18 +48,20 @@ class Login(Resource):
         if not username or not password:
             return "Provide both username and password", 401
 
-        #Check that the user is Registered
+        # Check that the user is Registered
         user = User.query.filter_by(username=username).first()
         if not user:
             return "Invalid username or password", 401
 
         #  Check password
         if not user.check_password(password):
-            print(password)
-            print(user.password)
             return "Invalid Password", 401
         # generate auth token
         auth_token = user.generate_auth()
+        response_dict = {'message': 'Successfully logged in',
+                         'user': user.username,
+                         'auth_token': auth_token
+                         }
 
-        # Return auth token
-        return auth_token, 200
+        # Return response dict
+        return response_dict, 200

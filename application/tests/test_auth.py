@@ -1,6 +1,5 @@
 import json
 from .tests import BaseTest
-from application.resources.v1.auth import Login
 
 
 class AuthTestCase(BaseTest):

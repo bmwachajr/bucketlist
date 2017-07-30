@@ -34,10 +34,8 @@ class User(db.Model):
                    "iat": datetime.utcnow()
                    }
 
-        # encode payload
-        auth_token = {
-                    'auth_token': jwt.encode(payload, SECRET_KEY).decode()
-                      }
+        # encode payload and return auth_token
+        auth_token = jwt.encode(payload, SECRET_KEY).decode()
         return auth_token
 
     def save(self):
