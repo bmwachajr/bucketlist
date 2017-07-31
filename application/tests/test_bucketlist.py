@@ -1,11 +1,21 @@
-import json
+import json, jwt
+from datetime import datetime, timedelta
+from application import SECRET_KEY
 from .tests import BaseTest
 
 
 class BucketlistTestCase(BaseTest):
 
     def Setup(self):
-        pass
+        """ setup users to add bucketlists """
+        self.user = {'username': 'default_user', 'password': 'password'}
+        response = self.client.post('/auth/login', data=user)
+        self.assertEqual(response.status_code, 200)
+
+        # extract auth_token
+        user_auth = json.loads(response.data)
+        auth_token = user_auth['auth_token']
+        self.headers = {'auth_token': auth_token}
 
     def test_create_bucketlist(self):
         """ test create new bucketlist """
@@ -47,7 +57,43 @@ class BucketlistTestCase(BaseTest):
 
     def test_create_invalid_bucketlist(self):
         """ test creating bucketlist with empty data """
-        pass
+        user = {'username': 'default_user', 'password': 'password'}
+        response = self.client.post('/auth/login', data=user)
+        self.assertEqual(response.status_code, 200)
+
+        # extract auth_token
+        user_auth = json.loads(response.data)
+        auth_token = user_auth['auth_token']
+        headers = {'auth_token': auth_token}
+        form = {'name': ''}
+        url = '/bucketlists/'
+
+        # create bucket list
+        response = self.client.post(url, data=form, headers=headers)
+        self.assertEqual(response.status_code, 401)
+        self.assertIn('Name cannot be empty', response.data.decode())
+
+    def test_unregistered_user_add_bucketlist(self):
+        """ test adding a bucketlist by an unregistered user """
+        # create a valid token for an unregistered user
+        payload = {'id': 50,
+                   'exp': datetime.utcnow() + timedelta(seconds=600),
+                   "iat": datetime.utcnow()
+                   }
+
+        # encode payload and return auth_token
+        auth_token = jwt.encode(payload, SECRET_KEY).decode()
+
+        # create forms and headers
+        headers = {'auth_token': auth_token}
+        form = {'name': ''}
+        url = '/bucketlists/'
+
+        # create bucket list
+        response = self.client.post(url, data=form, headers=headers)
+        self.assertEqual(response.status_code, 401)
+        self.assertIn('Forbidden Access', response.data.decode())
+
 
     def test_get_bucketlists(self):
         """ test get all bucketlists of a user """
