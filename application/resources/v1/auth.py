@@ -2,7 +2,6 @@ from flask import request
 from flask_restful import Resource
 from flask_restful import reqparse
 from application.models import User
-
 parser = reqparse.RequestParser()
 
 

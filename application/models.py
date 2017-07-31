@@ -6,7 +6,6 @@ import jwt
 from datetime import datetime, timedelta
 
 
-
 class User(db.Model):
     """ Creates users on the system """
 
@@ -58,6 +57,11 @@ class Bucketlist(db.Model):
     date_created = db.Column(db.DateTime, server_default=func.now())
     date_modified = db.Column(db.DateTime, server_onupdate=func.now())
     items = db.relationship('Item', backref='bucketlist', lazy='dynamic')
+
+    def save(self):
+        """ Save a bucketlist into the database """
+        db.session.add(self)
+        db.session.commit()
 
     def __repr__(self):
         return '<Bucketlist %r>' % self.title
