@@ -2,7 +2,7 @@ from flask_testing import TestCase
 import nose
 from application import app, db
 import config
-from application.models import User
+from application.models import User, Bucketlist
 
 
 class BaseTest(TestCase):
@@ -18,7 +18,15 @@ class BaseTest(TestCase):
 
         default_user = User(username="default_user", email="Default@example.com")
         default_user.set_password(password="password")
+
+        # add test bucketlists
+        bucketlist1 = Bucketlist(name="Trip to Mombasa", created_by=default_user.username, author=default_user)
+        bucketlist2 = Bucketlist(name="Charity Drive", created_by=default_user.username, author=default_user)
+
+
         db.session.add(default_user)
+        db.session.add(bucketlist1)
+        db.session.add(bucketlist2)
         db.session.commit()
 
     def tearDown(self):
