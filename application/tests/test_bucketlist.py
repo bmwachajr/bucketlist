@@ -167,7 +167,8 @@ class BucketlistTestCase(BaseTest):
 
         # response data
         get_response = self.client.get(url, headers=headers)
-        self.assertEqual(get_response.status_code, 204)
+        self.assertEqual(get_response.status_code, 202)
+        self.assertIn("Bucketlist not found", get_response.data.decode())
 
     def test_get_invalid_bucketlist(self):
         """ test get invalid bucketlist id  """
@@ -184,7 +185,8 @@ class BucketlistTestCase(BaseTest):
 
         # response data
         get_response = self.client.get(url, headers=headers)
-        self.assertEqual(get_response.status_code, 204)
+        self.assertEqual(get_response.status_code, 202)
+        self.assertIn("Bucketlist not found", get_response.data.decode())
 
     def test_get_nonexistent_bucketlist(self):
         """ test get a non existant bucketlist  """
@@ -200,8 +202,9 @@ class BucketlistTestCase(BaseTest):
         url = '/bucketlists/10'
 
         # response data
-        response = self.client.get(url, headers=headers)
-        self.assertEqual(response.status_code, 204)
+        get_response = self.client.get(url, headers=headers)
+        self.assertEqual(get_response.status_code, 202)
+        self.assertIn("Bucketlist not found", get_response.data.decode())
 
     def test_update_bucketlist(self):
         """ test edit and update a specific bucketlist """
@@ -218,9 +221,52 @@ class BucketlistTestCase(BaseTest):
         form = {'name': 'Trip to brazil'}
 
         # response data
-        get_response = self.client.put(url, data=form, headers=headers)
+        put_response = self.client.put(url, data=form, headers=headers)
+        self.assertEqual(put_response.status_code, 201)
+        self.assertIn('Successfully updated bucketlist', put_response.data.decode())
+
+        # get the bucket list an check it was updated
+        get_response = self.client.get(url, headers=headers)
         self.assertEqual(get_response.status_code, 200)
         self.assertIn('Trip to brazil', get_response.data.decode())
+
+    def test_invalid_bucketlist_update(self):
+        """ test edit and update a specific bucketlist """
+        # login default_user
+        user = {'username': 'default_user', 'password': 'password'}
+        response = self.client.post('/auth/login', data=user)
+        self.assertEqual(response.status_code, 200)
+
+        # extract auth_token
+        user_auth = json.loads(response.data)
+        auth_token = user_auth['auth_token']
+        headers = {'auth_token': auth_token}
+        url = '/bucketlists/2'
+        form = {'name': ''}
+
+        # response data
+        put_response = self.client.put(url, data=form, headers=headers)
+        self.assertEqual(put_response.status_code, 401)
+        self.assertIn('Name cannot be empty', put_response.data.decode())
+
+    def test_update_unathorized_bucketlist(self):
+        """ test edit and update a specific bucketlist """
+        # login default_user
+        user = {'username': 'default_user', 'password': 'password'}
+        response = self.client.post('/auth/login', data=user)
+        self.assertEqual(response.status_code, 200)
+
+        # extract auth_token
+        user_auth = json.loads(response.data)
+        auth_token = user_auth['auth_token']
+        headers = {'auth_token': auth_token}
+        url = '/bucketlists/3'
+        form = {'name': 'Dubai Skydive'}
+
+        # response data
+        put_response = self.client.put(url, data=form, headers=headers)
+        self.assertEqual(put_response.status_code, 202)
+        self.assertIn('Bucketlist not found', put_response.data.decode())
 
     def test_delete_bucketlists(self):
         """ test deletion of a specific bucketlist """
