@@ -3,6 +3,7 @@ import nose
 from application import app, db
 import config
 from application.models import User, Bucketlist
+from datetime import datetime
 
 
 class BaseTest(TestCase):
@@ -20,9 +21,8 @@ class BaseTest(TestCase):
         default_user.set_password(password="password")
 
         # add test bucketlists
-        bucketlist1 = Bucketlist(name="Trip to Mombasa", created_by=default_user.username, author=default_user)
-        bucketlist2 = Bucketlist(name="Charity Drive", created_by=default_user.username, author=default_user)
-
+        bucketlist1 = Bucketlist(name="Trip to Mombasa", date_created=datetime.utcnow(), created_by=default_user.username, author=default_user)
+        bucketlist2 = Bucketlist(name="Charity Drive", date_created=datetime.utcnow(), created_by=default_user.username, author=default_user)
 
         db.session.add(default_user)
         db.session.add(bucketlist1)
