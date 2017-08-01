@@ -2,6 +2,7 @@ import json, jwt
 from datetime import datetime, timedelta
 from application import SECRET_KEY
 from .tests import BaseTest
+from flask import flash
 
 
 class BucketlistTestCase(BaseTest):
@@ -94,10 +95,23 @@ class BucketlistTestCase(BaseTest):
         self.assertEqual(response.status_code, 401)
         self.assertIn('Forbidden Access', response.data.decode())
 
-
     def test_get_bucketlists(self):
         """ test get all bucketlists of a user """
-        pass
+        # login default_user
+        user = {'username': 'default_user', 'password': 'password'}
+        response = self.client.post('/auth/login', data=user)
+        self.assertEqual(response.status_code, 200)
+
+        # extract auth_token
+        user_auth = json.loads(response.data)
+        auth_token = user_auth['auth_token']
+        headers = {'auth_token': auth_token}
+        url = '/bucketlists/'
+
+        # get default_user's bucketlists
+        response = self.client.get(url, headers=headers)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('Trip to Mombasa', response.data.decode())
 
     def test_get_bucketlist(self):
         """ test get specific bucketlist """
