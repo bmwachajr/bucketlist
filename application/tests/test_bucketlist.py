@@ -231,7 +231,7 @@ class BucketlistTestCase(BaseTest):
         self.assertIn('Trip to brazil', get_response.data.decode())
 
     def test_invalid_bucketlist_update(self):
-        """ test edit and update a specific bucketlist """
+        """ test edit and update bucketlist with empty data """
         # login default_user
         user = {'username': 'default_user', 'password': 'password'}
         response = self.client.post('/auth/login', data=user)
@@ -250,7 +250,7 @@ class BucketlistTestCase(BaseTest):
         self.assertIn('Name cannot be empty', put_response.data.decode())
 
     def test_update_unathorized_bucketlist(self):
-        """ test edit and update a specific bucketlist """
+        """ test edit and update another users bucketlist """
         # login default_user
         user = {'username': 'default_user', 'password': 'password'}
         response = self.client.post('/auth/login', data=user)
@@ -268,8 +268,8 @@ class BucketlistTestCase(BaseTest):
         self.assertEqual(put_response.status_code, 202)
         self.assertIn('Bucketlist not found', put_response.data.decode())
 
-    def test_delete_bucketlists(self):
-        """ test deletion of a specific bucketlist """
+    def test_delete_bucketlist_successfully(self):
+        """ test delete a specific bucketlist """
         # login default_user
         user = {'username': 'default_user', 'password': 'password'}
         response = self.client.post('/auth/login', data=user)
@@ -289,4 +289,22 @@ class BucketlistTestCase(BaseTest):
         # get the bucket list an check it was updated
         get_response = self.client.get(url, headers=headers)
         self.assertEqual(get_response.status_code, 202)
-        self.assertIn('bucketlist not found', get_response.data.decode())
+        self.assertIn('Bucketlist not found', get_response.data.decode())
+
+    def test_delete_unathorized_bucketlist(self):
+        """ test delete another users bucketlist """
+        # login default_user
+        user = {'username': 'default_user', 'password': 'password'}
+        response = self.client.post('/auth/login', data=user)
+        self.assertEqual(response.status_code, 200)
+
+        # extract auth_token
+        user_auth = json.loads(response.data)
+        auth_token = user_auth['auth_token']
+        headers = {'auth_token': auth_token}
+        url = '/bucketlists/3'
+
+        # response data
+        put_response = self.client.delete(url, headers=headers)
+        self.assertEqual(put_response.status_code, 202)
+        self.assertIn('Bucketlist not found', put_response.data.decode())
