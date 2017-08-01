@@ -89,3 +89,17 @@ class BucketlistResource(ResourceMixins):
         bucketlist.save()
 
         return "Successfully updated bucketlist", 201
+
+    @ResourceMixins.authenticate
+    def delete(self, user, id):
+        """ delete a bucletlist """
+        # Search for bucketlist
+        bucketlist = Bucketlist.query.filter_by(id=id, created_by=user.email).first()
+
+        # return 400 if bucketlist non exixtant or not belongs to this user
+        if bucketlist is None:
+            return 'Bucketlist not found', 202
+
+        bucketlist.delete()
+
+        return "Successfully deleted bucketlist", 200
