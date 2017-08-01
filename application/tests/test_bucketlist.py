@@ -1,8 +1,8 @@
-import json, jwt
+import json
+import jwt
 from datetime import datetime, timedelta
 from application import SECRET_KEY
 from .tests import BaseTest
-from flask import flash
 
 
 class BucketlistTestCase(BaseTest):
