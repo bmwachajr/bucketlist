@@ -270,4 +270,23 @@ class BucketlistTestCase(BaseTest):
 
     def test_delete_bucketlists(self):
         """ test deletion of a specific bucketlist """
-        pass
+        # login default_user
+        user = {'username': 'default_user', 'password': 'password'}
+        response = self.client.post('/auth/login', data=user)
+        self.assertEqual(response.status_code, 200)
+
+        # extract auth_token
+        user_auth = json.loads(response.data)
+        auth_token = user_auth['auth_token']
+        headers = {'auth_token': auth_token}
+        url = '/bucketlists/2'
+
+        # response data
+        delete_response = self.client.delete(url, headers=headers)
+        self.assertEqual(delete_response.status_code, 200)
+        self.assertIn('Successfully deleted bucketlist', delete_response.data.decode())
+
+        # get the bucket list an check it was updated
+        get_response = self.client.get(url, headers=headers)
+        self.assertEqual(get_response.status_code, 202)
+        self.assertIn('bucketlist not found', get_response.data.decode())
