@@ -63,6 +63,11 @@ class Bucketlist(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def delete(self):
+        """ delete a bucketlist from the database """
+        db.session.delete(self)
+        db.session.commit()
+
     def __repr__(self):
         return '<Bucketlist %r>' % self.title
 
