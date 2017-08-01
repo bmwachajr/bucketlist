@@ -1,8 +1,6 @@
-from flask_restful import Resource
 from application.mixins import ResourceMixins
 from application.models import Bucketlist
 from datetime import datetime
-import json
 
 
 class Bucketlists(ResourceMixins):
