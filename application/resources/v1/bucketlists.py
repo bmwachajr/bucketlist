@@ -50,7 +50,7 @@ class BucketlistResource(ResourceMixins):
 
         # return 400 if bucketlist non exixtant or not belongs to this user
         if bucketlist is None:
-            return 'Bucketlist not found', 204
+            return 'Bucketlist not found', 202
 
         # serialize bucketlist
         response_bucketlist = [
@@ -63,3 +63,29 @@ class BucketlistResource(ResourceMixins):
                     ]
 
         return response_bucketlist, 200
+
+    @ResourceMixins.authenticate
+    def put(self, user, id):
+        """ create a new a bucletlist """
+        # parse request data
+        if 'name' not in self.request.form:
+            return "Bucketlist not Update", 200
+
+        bucketlist_name = self.request.form['name']
+
+        # validate bucketlist
+        if not bucketlist_name:
+            return "Name cannot be empty", 401
+
+        # search for the bucketlist_id
+        bucketlist = Bucketlist.query.filter_by(id=id, created_by=user.email).first()
+
+        # return 400 if bucketlist non exixtant or not belongs to this user
+        if bucketlist is None:
+            return 'Bucketlist not found', 202
+
+        # Update bucketlist and save changes
+        bucketlist.name = bucketlist_name
+        bucketlist.save()
+
+        return "Successfully updated bucketlist", 201
