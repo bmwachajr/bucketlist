@@ -205,7 +205,22 @@ class BucketlistTestCase(BaseTest):
 
     def test_update_bucketlist(self):
         """ test edit and update a specific bucketlist """
-        pass
+        # login default_user
+        user = {'username': 'default_user', 'password': 'password'}
+        response = self.client.post('/auth/login', data=user)
+        self.assertEqual(response.status_code, 200)
+
+        # extract auth_token
+        user_auth = json.loads(response.data)
+        auth_token = user_auth['auth_token']
+        headers = {'auth_token': auth_token}
+        url = '/bucketlists/2'
+        form = {'name': 'Trip to brazil'}
+
+        # response data
+        get_response = self.client.put(url, data=form, headers=headers)
+        self.assertEqual(get_response.status_code, 200)
+        self.assertIn('Trip to brazil', get_response.data.decode())
 
     def test_delete_bucketlists(self):
         """ test deletion of a specific bucketlist """
