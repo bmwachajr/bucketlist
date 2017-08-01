@@ -2,6 +2,7 @@ from flask_restful import Resource
 from application.mixins import ResourceMixins
 from application.models import Bucketlist
 from datetime import datetime
+import json
 
 
 class Bucketlists(ResourceMixins):
@@ -39,5 +40,26 @@ class Bucketlists(ResourceMixins):
 
         return bucketlists, 200
 
-class BucketlistResource(Resource):
-    pass
+
+class BucketlistResource(ResourceMixins):
+    @ResourceMixins.authenticate
+    def get(self, user, id):
+        """ get a bucketlist with bucketlist_id """
+        # Search for bucketlist
+        bucketlist = Bucketlist.query.filter_by(id=id, created_by=user.email).first()
+
+        # return 400 if bucketlist non exixtant or not belongs to this user
+        if bucketlist is None:
+            return 'Bucketlist not found', 204
+
+        # serialize bucketlist
+        response_bucketlist = [
+                        {'id': bucketlist.id,
+                         'name': bucketlist.name,
+                         'date_created': str(bucketlist.date_created),
+                         'date_modified': str(bucketlist.date_modified),
+                         'created_by': bucketlist.created_by
+                         }
+                    ]
+
+        return response_bucketlist, 200
