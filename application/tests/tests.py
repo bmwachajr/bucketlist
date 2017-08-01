@@ -20,13 +20,19 @@ class BaseTest(TestCase):
         default_user = User(username="default_user", email="Default@example.com")
         default_user.set_password(password="password")
 
+        default_user2 = User(username="default_user2", email="Default2@example.com")
+        default_user2.set_password(password="password")
+
         # add test bucketlists
         bucketlist1 = Bucketlist(name="Trip to Mombasa", date_created=datetime.utcnow(), created_by=default_user.username, author=default_user)
         bucketlist2 = Bucketlist(name="Charity Drive", date_created=datetime.utcnow(), created_by=default_user.username, author=default_user)
+        bucketlist3 = Bucketlist(name="Dubai sky dive", date_created=datetime.utcnow(), created_by=default_user2.username, author=default_user2)
 
         db.session.add(default_user)
+        db.session.add(default_user2)
         db.session.add(bucketlist1)
         db.session.add(bucketlist2)
+        db.session.add(bucketlist3)
         db.session.commit()
 
     def tearDown(self):
