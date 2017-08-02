@@ -7,17 +7,6 @@ from .tests import BaseTest
 
 class BucketlistTestCase(BaseTest):
 
-    def Setup(self):
-        """ setup users to add bucketlists """
-        self.user = {'username': 'default_user', 'password': 'password'}
-        response = self.client.post('/auth/login', data=user)
-        self.assertEqual(response.status_code, 200)
-
-        # extract auth_token
-        user_auth = json.loads(response.data)
-        auth_token = user_auth['auth_token']
-        self.headers = {'auth_token': auth_token}
-
     def test_create_bucketlist(self):
         """ test create new bucketlist """
         user = {'username': 'default_user', 'password': 'password'}

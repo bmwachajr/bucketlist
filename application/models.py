@@ -84,5 +84,10 @@ class Item(db.Model):
     date_modified = db.Column(db.DateTime, onupdate=datetime.utcnow())
     bucketlist_id = db.Column(db.Integer, db.ForeignKey('bucketlists.id'))
 
+    def save(self):
+        """ Save an item into the database """
+        db.session.add(self)
+        db.session.commit()
+
     def __repr__(self):
         return '<item %r>' % self.title

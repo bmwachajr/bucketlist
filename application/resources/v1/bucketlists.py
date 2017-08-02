@@ -67,7 +67,7 @@ class BucketlistResource(ResourceMixins):
         """ create a new a bucletlist """
         # parse request data
         if 'name' not in self.request.form:
-            return "Bucketlist not Update", 200
+            return "Bucketlist not Update", 202
 
         bucketlist_name = self.request.form['name']
 
