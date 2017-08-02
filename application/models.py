@@ -69,7 +69,7 @@ class Bucketlist(db.Model):
         db.session.commit()
 
     def __repr__(self):
-        return '<Bucketlist %r>' % self.title
+        return '<Bucketlist %r>' % self.name
 
 
 class Item(db.Model):
@@ -90,4 +90,4 @@ class Item(db.Model):
         db.session.commit()
 
     def __repr__(self):
-        return '<item %r>' % self.title
+        return '<item %r>' % self.description
