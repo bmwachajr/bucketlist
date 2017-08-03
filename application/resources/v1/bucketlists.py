@@ -1,6 +1,7 @@
 from application.mixins import ResourceMixins
 from application.models import Bucketlist
 from datetime import datetime
+import json
 
 
 class Bucketlists(ResourceMixins):
@@ -15,7 +16,8 @@ class Bucketlists(ResourceMixins):
             return "Name cannot be empty", 401
 
         # create bucketlist and save bucketlist
-        bucketlist = Bucketlist(name=bucketlist_name, date_created=datetime.utcnow(), created_by=user.username, author=user)
+        bucketlist = Bucketlist(name=bucketlist_name, date_created=datetime.utcnow(
+        ), created_by=user.username, author=user)
         bucketlist.save()
 
         return "Successfully created bucketlist", 201
@@ -24,12 +26,12 @@ class Bucketlists(ResourceMixins):
     def get(self, user):
         """ Getall created bucketlists """
         bucketlists = [
-                        {'id': bucketlist.id,
-                         'name': bucketlist.name,
-                         'date_created': str(bucketlist.date_created),
-                         'date_modified': str(bucketlist.date_modified),
-                         'created_by': bucketlist.created_by
-                         } for bucketlist in user.bucketlists
+            {'id': bucketlist.id,
+             'name': bucketlist.name,
+             'date_created': str(bucketlist.date_created),
+             'date_modified': str(bucketlist.date_modified),
+             'created_by': bucketlist.created_by
+             } for bucketlist in user.bucketlists
         ]
 
         # if empty retutn no bucketlists added
@@ -44,21 +46,33 @@ class BucketlistResource(ResourceMixins):
     def get(self, user, id):
         """ get a bucketlist with bucketlist_id """
         # Search for bucketlist
-        bucketlist = Bucketlist.query.filter_by(id=id, created_by=user.email).first()
+        bucketlist = Bucketlist.query.filter_by(
+            id=id, created_by=user.email).first()
 
         # return 400 if bucketlist non exixtant or not belongs to this user
         if bucketlist is None:
             return 'Bucketlist not found', 202
 
+        # serialize items if ann
+        bucketlists_items = [
+            {'id': item.id,
+             'name': item.description,
+             'date_created': str(item.date_created),
+             'date_modified': str(item.date_modified),
+             'done': str(item.is_done)
+             } for item in bucketlist.items
+        ]
+
         # serialize bucketlist
         response_bucketlist = [
-                        {'id': bucketlist.id,
-                         'name': bucketlist.name,
-                         'date_created': str(bucketlist.date_created),
-                         'date_modified': str(bucketlist.date_modified),
-                         'created_by': bucketlist.created_by
-                         }
-                    ]
+            {'id': bucketlist.id,
+             'name': bucketlist.name,
+             'items': json.dumps(bucketlists_items),
+             'date_created': str(bucketlist.date_created),
+             'date_modified': str(bucketlist.date_modified),
+             'created_by': bucketlist.created_by
+             }
+        ]
 
         return response_bucketlist, 200
 
@@ -76,7 +90,8 @@ class BucketlistResource(ResourceMixins):
             return "Name cannot be empty", 401
 
         # search for the bucketlist_id
-        bucketlist = Bucketlist.query.filter_by(id=id, created_by=user.email).first()
+        bucketlist = Bucketlist.query.filter_by(
+            id=id, created_by=user.email).first()
 
         # return 400 if bucketlist non exixtant or not belongs to this user
         if bucketlist is None:
@@ -92,7 +107,8 @@ class BucketlistResource(ResourceMixins):
     def delete(self, user, id):
         """ delete a bucletlist """
         # Search for bucketlist
-        bucketlist = Bucketlist.query.filter_by(id=id, created_by=user.email).first()
+        bucketlist = Bucketlist.query.filter_by(
+            id=id, created_by=user.email).first()
 
         # return 400 if bucketlist non exixtant or not belongs to this user
         if bucketlist is None:

@@ -10,4 +10,4 @@ def load_urls(api):
     api.add_resource(Bucketlists, "/bucketlists/")
     api.add_resource(BucketlistResource, "/bucketlists/<id>")
     api.add_resource(Items, "/bucketlists/<id>/items/")
-    api.add_resource(ItemResource, "/bucketlists/<id>/item/<item_id>")
+    api.add_resource(ItemResource, "/bucketlists/<id>/items/<item_id>")

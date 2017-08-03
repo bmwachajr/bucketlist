@@ -78,7 +78,7 @@ class Item(db.Model):
     __tablename__ = 'items'
 
     id = db.Column(db.Integer, primary_key=True)
-    description = db.column(db.String(120))
+    description = db.Column(db.String(120))
     is_done = False
     date_created = db.Column(db.DateTime, default=datetime.utcnow())
     date_modified = db.Column(db.DateTime, onupdate=datetime.utcnow())
@@ -87,6 +87,11 @@ class Item(db.Model):
     def save(self):
         """ Save an item into the database """
         db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        """ delete an item from database """
+        db.session.delete(self)
         db.session.commit()
 
     def __repr__(self):
