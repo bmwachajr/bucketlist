@@ -1,0 +1,13 @@
+language: python
+python:
+  - "3.6"
+install:
+  - pip install -e . --use-mirrors
+  - pip install coveralls
+before_script:
+  - pip install -r requirements.txt
+  - git checkout ft-CRUD-items
+script:
+  - apllication/tests/test.py --doctest-modules --pep8 coveralls -v --cov coveralls --cov-report term-missing
+after_success:
+  - coveralls
