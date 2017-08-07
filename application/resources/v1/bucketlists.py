@@ -1,7 +1,6 @@
 from application.mixins import ResourceMixins
 from application.models import Bucketlist
 from datetime import datetime
-import json
 
 
 class Bucketlists(ResourceMixins):
@@ -24,10 +23,18 @@ class Bucketlists(ResourceMixins):
 
     @ResourceMixins.authenticate
     def get(self, user):
-        """ Getall created bucketlists """
+        """ Get all created bucketlists """
         bucketlists = [
             {'id': bucketlist.id,
              'name': bucketlist.name,
+             'items': [
+                 {'id': item.id,
+                  'name': item.description,
+                  'date_created': str(item.date_created),
+                  'date_modified': str(item.date_modified),
+                  'done': str(item.is_done)
+                  } for item in bucketlist.items
+             ],
              'date_created': str(bucketlist.date_created),
              'date_modified': str(bucketlist.date_modified),
              'created_by': bucketlist.created_by
@@ -67,7 +74,7 @@ class BucketlistResource(ResourceMixins):
         response_bucketlist = [
             {'id': bucketlist.id,
              'name': bucketlist.name,
-             'items': json.dumps(bucketlists_items),
+             'items': bucketlists_items,
              'date_created': str(bucketlist.date_created),
              'date_modified': str(bucketlist.date_modified),
              'created_by': bucketlist.created_by

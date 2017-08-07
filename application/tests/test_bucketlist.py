@@ -23,7 +23,8 @@ class BucketlistTestCase(BaseTest):
         # create bucket list
         response = self.client.post(url, data=form, headers=headers)
         self.assertEqual(response.status_code, 201)
-        self.assertIn('Successfully created bucketlist', response.data.decode())
+        self.assertIn('Successfully created bucketlist',
+                      response.data.decode())
 
     def test_unathorized_bucketlist_creation(self):
         """ test creating a bucketlist without being logged in """
@@ -141,6 +142,24 @@ class BucketlistTestCase(BaseTest):
         self.assertEqual(get_response.status_code, 200)
         self.assertIn('Charity Drive', get_response.data.decode())
 
+    def test_get_unavialable_bucketlists(self):
+        """ test get bucketlists that are unavialable """
+        # login default_user
+        user = {'username': 'default_user3', 'password': 'password'}
+        response = self.client.post('/auth/login', data=user)
+        self.assertEqual(response.status_code, 200)
+
+        # extract auth_token
+        user_auth = json.loads(response.data)
+        auth_token = user_auth['auth_token']
+        headers = {'auth_token': auth_token}
+        url = '/bucketlists/'
+
+        # response data
+        get_response = self.client.get(url, headers=headers)
+        self.assertEqual(get_response.status_code, 200)
+        self.assertIn('You have no avialable bucketlists', get_response.data.decode())
+
     def test_get_unathorized_bucketlist(self):
         """ test get another user bucketlist """
         # login default_user
@@ -212,7 +231,8 @@ class BucketlistTestCase(BaseTest):
         # response data
         put_response = self.client.put(url, data=form, headers=headers)
         self.assertEqual(put_response.status_code, 201)
-        self.assertIn('Successfully updated bucketlist', put_response.data.decode())
+        self.assertIn('Successfully updated bucketlist',
+                      put_response.data.decode())
 
         # get the bucket list an check it was updated
         get_response = self.client.get(url, headers=headers)
@@ -273,7 +293,8 @@ class BucketlistTestCase(BaseTest):
         # response data
         delete_response = self.client.delete(url, headers=headers)
         self.assertEqual(delete_response.status_code, 200)
-        self.assertIn('Successfully deleted bucketlist', delete_response.data.decode())
+        self.assertIn('Successfully deleted bucketlist',
+                      delete_response.data.decode())
 
         # get the bucket list an check it was updated
         get_response = self.client.get(url, headers=headers)

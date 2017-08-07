@@ -1,13 +1,15 @@
+from datetime import datetime
 from flask_testing import TestCase
 import nose
 from application import app, db
 import config
 from application.models import User, Bucketlist, Item
-from datetime import datetime
 
 
 class BaseTest(TestCase):
+    """ This module setsup test udsers, bucketlistsand items used for testing the system """
     def create_app(self):
+        """ create the flask application with testing configurations """
         app.config.from_object(config.environment_configuration['testing'])
         return app
 
@@ -23,6 +25,9 @@ class BaseTest(TestCase):
         default_user2 = User(username="default_user2", email="Default2@example.com")
         default_user2.set_password(password="password")
 
+        default_user3 = User(username="default_user3", email="Default3@example.com")
+        default_user3.set_password(password="password")
+
         # add test bucketlists
         bucketlist1 = Bucketlist(name="Trip to Mombasa", date_created=datetime.utcnow(), created_by=default_user.username, author=default_user)
         bucketlist2 = Bucketlist(name="Charity Drive", date_created=datetime.utcnow(), created_by=default_user.username, author=default_user)
@@ -35,6 +40,7 @@ class BaseTest(TestCase):
 
         db.session.add(default_user)
         db.session.add(default_user2)
+        db.session.add(default_user3)
         db.session.add(bucketlist1)
         db.session.add(bucketlist2)
         db.session.add(bucketlist3)
@@ -44,6 +50,7 @@ class BaseTest(TestCase):
         db.session.commit()
 
     def tearDown(self):
+        """ Drop the database after every test """
         db.drop_all()
 
 
