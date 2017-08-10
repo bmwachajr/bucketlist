@@ -24,6 +24,11 @@ class Bucketlists(ResourceMixins):
     @ResourceMixins.authenticate
     def get(self, user):
         """ Get all created bucketlists """
+        search = True if self.request.args.get('q') else False
+        limit = int(self.request.args.get('limit')) if self.request.args.get('limit') else 20
+        page = int(self.request.args.get('page')) if self.request.args.get('page') else 1
+        bucketlists = user.bucketlists.paginate(page, limit, True).items
+
         bucketlists = [
             {'id': bucketlist.id,
              'name': bucketlist.name,
@@ -38,7 +43,7 @@ class Bucketlists(ResourceMixins):
              'date_created': str(bucketlist.date_created),
              'date_modified': str(bucketlist.date_modified),
              'created_by': bucketlist.created_by
-             } for bucketlist in user.bucketlists
+             } for bucketlist in bucketlists
         ]
 
         # if empty retutn no bucketlists added
