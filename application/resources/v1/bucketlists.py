@@ -28,6 +28,7 @@ class Bucketlists(ResourceMixins):
         limit = int(self.request.args.get('limit')) if self.request.args.get('limit') else 20
         page = int(self.request.args.get('page')) if self.request.args.get('page') else 1
         bucketlists = user.bucketlists.paginate(page, limit, True).items
+        bucketlists = user.bucketlists.filter(Bucketlist.name.contains(self.request.args.get('q'))) if self.request.args.get('q') else bucketlists
 
         bucketlists = [
             {'id': bucketlist.id,
