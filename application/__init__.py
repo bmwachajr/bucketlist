@@ -2,10 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api
 import config
-
-
-# set application environment
-environment = 'development'
+from config import environment
 
 
 # create the flask application

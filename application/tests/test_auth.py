@@ -1,5 +1,5 @@
 import json
-from .tests import BaseTest
+from .tests_setup import BaseTest
 
 
 class AuthTestCase(BaseTest):
@@ -9,10 +9,10 @@ class AuthTestCase(BaseTest):
 
     def test_user_registers_succesfully(self):
         """ Test that a user can register successfully """
-        test_user = {
-                'username': 'test_user',
-                'password': 'password',
-                'email': 'test@example.com'}
+        test_user = {'username': 'test_user',
+                     'password': 'password',
+                     'email': 'test@example.com'
+                     }
         url = '/auth/register'
 
         response = self.client.post(url, data=test_user)
@@ -21,10 +21,10 @@ class AuthTestCase(BaseTest):
 
     def test_duplicate_user_registration(self):
         """ Test cannot register a duplicate email or useername """
-        duplicate_user = {
-                'username': 'test_user',
-                'password': 'password',
-                'email': 'duplicate@example.com'}
+        duplicate_user = {'username': 'test_user',
+                          'password': 'password',
+                          'email': 'duplicate@example.com'
+                          }
         url = '/auth/register'
 
         response = self.client.post(url, data=duplicate_user)
@@ -33,15 +33,13 @@ class AuthTestCase(BaseTest):
         response = self.client.post(url, data=duplicate_user)
         self.assertEqual(response.status_code, 409)
 
-
-
     def test_invalid_user_registration(self):
         """ Test that a user cannot register with invalid email or username """
         # new user with invalid username or email
-        invalid_user = {
-                'username': '',
-                'password': 'password',
-                'email': ''}
+        invalid_user = {'username': '',
+                        'password': 'password',
+                        'email': ''
+                        }
         url = '/auth/register'
 
         response = self.client.post(url, data=invalid_user)
@@ -52,7 +50,8 @@ class AuthTestCase(BaseTest):
         """ test registering a user using invalid keys  """
         user = {'key1': "henry",
                 'key2': 'password',
-                'key3': 'henry@example.com'}
+                'key3': 'henry@example.com'
+                }
 
         url = '/auth/register'
 
@@ -77,7 +76,8 @@ class AuthTestCase(BaseTest):
 
         response = self.client.post(url, data=user)
         self.assertEqual(response.status_code, 401)
-        self.assertIn('Provide both username and password', response.data.decode())
+        self.assertIn('Provide both username and password',
+                      response.data.decode())
 
     def test_invalid_username_login_attempt(self):
         """ Test user login with invalid username """

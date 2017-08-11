@@ -1,4 +1,4 @@
-from .tests import BaseTest
+from .tests_setup import BaseTest
 
 
 class TestViews(BaseTest):

@@ -1,5 +1,6 @@
 from datetime import datetime
 from flask_testing import TestCase
+import logging
 import nose
 from application import app, db
 import config
@@ -10,6 +11,7 @@ class BaseTest(TestCase):
     """ This module setsup test udsers, bucketlistsand items used for testing the system """
     def create_app(self):
         """ create the flask application with testing configurations """
+        logging.info("Creating the application")
         app.config.from_object(config.environment_configuration['testing'])
         return app
 

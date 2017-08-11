@@ -2,7 +2,7 @@ import json
 import jwt
 from datetime import datetime, timedelta
 from application import SECRET_KEY
-from .tests import BaseTest
+from .tests_setup import BaseTest
 
 
 class BucketlistTestCase(BaseTest):
