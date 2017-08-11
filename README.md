@@ -24,15 +24,15 @@ in development environment.
 
 * install requirements (Flask, ...) into virtualenv:
 
-        $ pip install -r healthchecks/requirements.txt
+        $ pip install -r requirements.txt
 
 * create database tables
 
-        $ ./manage.py create
-        $ ./manage.py migrate
+        $ python manage.py create
+        $ python manage.py migrate
 
 * run development server:
 
         $ ./manage.py runserver
 
-The site should now be running at `http://localhost:5080`
+The site should now be running at `http://localhost:8000
