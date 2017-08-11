@@ -5,7 +5,7 @@ install:
   - pip install coveralls
 before_script:
   - pip install -r requirements.txt
-  - git checkout ft-CRUD-items
+  - git checkout ft-add-paginattion
 script:
   - nosetests --with-coverage --cover-package=application
 after_success:
