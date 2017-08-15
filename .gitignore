@@ -1,0 +1,10 @@
+bc-venv
+.DS_Store
+*.pyc
+application/__init__.pyc
+databases/*
+db_repo/*
+.idea
+.coverage
+cover
+application/mixins.py
