@@ -6,7 +6,29 @@ from datetime import datetime
 class Items(ResourceMixins):
     @ResourceMixins.authenticate
     def post(self, user, id):
-        """ create a new item in bucketlist.id """
+        """ API Endpoint to create a new item
+        ---
+        tags:
+          - Bucketlist Item
+        parameters:
+          - name: auth_token
+            description: Authentication token
+            in: header
+            type: string
+            required: true
+
+          - name: id
+            description: Bucketlist Id
+            in: path
+            type: integer
+            required: true
+
+          - name: description
+            description: The description of am item
+            in: formData
+            type: string
+            required: true
+        """
         # search for bucketlist
         bucketlist = Bucketlist.query.filter_by(id=id, created_by=user.email).first()
 
@@ -36,7 +58,33 @@ class ItemResource(ResourceMixins):
     
     @ResourceMixins.authenticate
     def put(self, user, id, item_id):
-        """ update an new item """
+        """ API Endpoint to update an item
+        ---
+        tags:
+          - Bucketlist Item
+        parameters:
+          - name: auth_token
+            description: Authentication token
+            in: header
+            type: string
+            required: true
+
+          - name: id
+            description: Bucketlist Id
+            in: path
+            type: integer
+            required : true
+
+          - name: item_id
+            in: path
+            type: integer
+            required: true
+
+          - name: description
+            description: The description of a item to be added to a bucketlist
+            in: formData
+            typr: string
+        """
         # search for bucketlist
         bucketlist = Bucketlist.query.filter_by(id=id, created_by=user.email).first()
 
@@ -72,7 +120,27 @@ class ItemResource(ResourceMixins):
 
     @ResourceMixins.authenticate
     def delete(self, user, id, item_id):
-        """ delete an item """
+        """ API Endpoint to delete an item
+        ---
+        tags:
+          - Bucketlist Item
+        parameters:
+          - name: auth_token
+            description: Authentication token
+            in: header
+            type: string
+            required: true
+
+          - name: id
+            description: Bucketlist Id
+            in: path
+            type: integer
+
+          - name: item_id
+            in: path
+            type: integer
+            required: true
+        """
         # Search for bucketlist
         bucketlist = Bucketlist.query.filter_by(id=id, created_by=user.email).first()
 

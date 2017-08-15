@@ -7,7 +7,26 @@ parser = reqparse.RequestParser()
 
 class Register(Resource):
     def post(self):
-        """ Register a new user """
+        """ API User Registration Endpoint
+        ---
+        tags:
+          - Authentication
+        parameters:
+          - name: username
+            in: formData
+            type: string
+            required: true
+
+          - name: email
+            in: formData
+            type: string
+            required: true
+
+          - name: password
+            in: formData
+            type: string
+            required: true
+        """
         # Parse form data if any
         username = request.form['username']
         email = request.form['email']
@@ -37,8 +56,22 @@ class Register(Resource):
 
 
 class Login(Resource):
-    def post(self):
-        """ Loging a registered user """
+    def post(self):        
+        """ API User Login Endpoint
+        ---
+        tags:
+          - Authentication
+        parameters:
+          - name: username
+            in: formData
+            type: string
+            required: true
+
+          - name: password
+            in: formData
+            type: string
+            required: true
+        """
         # Get form data
         username = request.form['username']
         password = request.form['password']

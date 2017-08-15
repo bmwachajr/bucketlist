@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api
 import config
 from config import environment
+from flasgger import Swagger
 
 
 # create the flask application
@@ -14,6 +15,8 @@ def create_application(environment):
 
 app = create_application(environment)
 db = SQLAlchemy(app)
+Swagger = Swagger(app)
+
 api = Api(app=app)
 SECRET_KEY = app.config.get('SECRET_KEY')
 

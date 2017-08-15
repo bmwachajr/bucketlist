@@ -6,7 +6,23 @@ from datetime import datetime
 class Bucketlists(ResourceMixins):
     @ResourceMixins.authenticate
     def post(self, user):
-        """ create a new a bucletlist """
+        """ API Endpoint to create a new Bucletlist 
+        ---
+        tags:
+          - Bucketlists
+        parameters:
+          - name: name
+            description: the name or short description of a new bucketlist
+            in: formData
+            type: string
+            required: true
+
+          - name: auth_token
+            description: Authentication token
+            in: header
+            type: string
+            required: true
+        """
         # parse request data
         bucketlist_name = self.request.form['name']
 
@@ -23,7 +39,32 @@ class Bucketlists(ResourceMixins):
 
     @ResourceMixins.authenticate
     def get(self, user):
-        """ Get all created bucketlists """
+        """ API Endpoint to get all Bucketlists 
+        ---
+        tags:
+          - Bucketlists
+        parameters:
+          - name: auth_token
+            description: Authentication token
+            in: header
+            type: string
+            required: true
+
+          - name: limit
+            description: Pagination limit of return bucketlists
+            in: query
+            type: integer
+
+          - name: page
+            description: Page number
+            in: query
+            type: integer
+
+          - name: q
+            description: Search results using keyword
+            in: query
+            type: string
+        """
         search = True if self.request.args.get('q') else False
         limit = int(self.request.args.get('limit')) if self.request.args.get('limit') else 20
         page = int(self.request.args.get('page')) if self.request.args.get('page') else 1
@@ -57,7 +98,22 @@ class Bucketlists(ResourceMixins):
 class BucketlistResource(ResourceMixins):
     @ResourceMixins.authenticate
     def get(self, user, id):
-        """ get a bucketlist with bucketlist_id """
+        """ API Endpoint to get a specific bucketlist
+        ---
+        tags:
+          - Bucketlists
+        parameters:
+          - name: auth_token
+            description: Authentication token
+            in: header
+            type: string
+            required: true
+
+          - name: id
+            in: path
+            type: int
+            required: true
+        """
         # Search for bucketlist
         bucketlist = Bucketlist.query.filter_by(
             id=id, created_by=user.email).first()
@@ -91,7 +147,27 @@ class BucketlistResource(ResourceMixins):
 
     @ResourceMixins.authenticate
     def put(self, user, id):
-        """ create a new a bucletlist """
+        """ API Endpoint to uodate a bucketlist 
+        ---
+        tags:
+          - Bucketlists
+        parameters:
+          - name: auth_token
+            description: Authentication token
+            in: header
+            type: string
+            required: true
+
+          - name: id
+            description: Bucketlist Id
+            in: path
+            type: integer
+
+          - name: name
+            in: formData
+            type: string
+            required: true
+        """
         # parse request data
         if 'name' not in self.request.form:
             return "Bucketlist not Update", 202
@@ -118,8 +194,24 @@ class BucketlistResource(ResourceMixins):
 
     @ResourceMixins.authenticate
     def delete(self, user, id):
-        """ delete a bucletlist """
+        """ API Endpoint to delete a bucletlist
+        ---
+        tags:
+          - Bucketlists
+        parameters:
+          - name: auth_token
+            description: Authentication token
+            in: header
+            type: string
+            required: true
+
+          - name: id
+            description: Bucketlist id
+            in: path
+            type: integer
+        """
         # Search for bucketlist
+        print (id)
         bucketlist = Bucketlist.query.filter_by(
             id=id, created_by=user.email).first()
 
