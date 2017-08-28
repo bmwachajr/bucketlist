@@ -5,6 +5,9 @@ The building blocks are:
 * Python 3
 * Flask
 
+# Documentation
+https://bucketlist-io.herokuapp.com/apidocs/
+
 ## Setting Up for Development
 
 These are instructions for setting up bucketlist Flask app
