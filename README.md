@@ -28,11 +28,11 @@ in development environment.
 
 * create database tables
 
-        $ ./manage.py create
-        $ ./manage.py migrate
+        $ python manage.py create
+        $ python manage.py migrate
 
 * run development server:
 
         $ ./manage.py runserver
 
-The site should now be running at `http://localhost:5080`
+The site should now be running at `http://localhost:8000
