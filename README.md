@@ -7,6 +7,9 @@ The building blocks are:
 * Python 3
 * Flask
 
+# Documentation
+https://bucketlist-io.herokuapp.com/apidocs/
+
 ## Setting Up for Development
 
 These are instructions for setting up bucketlist Flask app
@@ -30,11 +33,11 @@ in development environment.
 
 * create database tables
 
-        $ ./manage.py create
-        $ ./manage.py migrate
+        $ python manage.py create
+        $ python manage.py migrate
 
 * run development server:
 
         $ ./manage.py runserver
 
-The site should now be running at `http://localhost:5080`
+The site should now be running at `http://localhost:8000

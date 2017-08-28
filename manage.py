@@ -1,4 +1,3 @@
-#!bc-venv/bin/python
 from flask import Flask
 from flask_script import Manager
 import imp

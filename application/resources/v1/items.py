@@ -113,6 +113,9 @@ class ItemResource(ResourceMixins):
             else:
                 item.is_done = item_is_done
 
+        if 'description' not in self.request.form and 'is_done' not in self.request.form:
+            return "Item not updated, Please check your form keys", 401
+
         # Save updates in database
         item.save()
 
