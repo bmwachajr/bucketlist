@@ -1,4 +1,3 @@
-import json
 from .tests_setup import BaseTest
 
 
@@ -97,21 +96,6 @@ class AuthTestCase(BaseTest):
         response = self.client.post(url, data=invalid_password)
         self.assertEqual(response.status_code, 401)
         self.assertIn('Invalid Password', response.data.decode())
-
-    def test_user_logout(self):
-        """ Test successfull user logout
-        # login user
-        user = {'username': 'test_user', 'password': 'password'}
-        url = '/auth/login'
-
-        response = self.client.post(url, data=user)
-        self.assertEqual(self.client.auth_token, None)
-
-        # logout user
-        url = '/logout'
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(self.client.auth_token, None) """
 
     def test_login_unregistered_user(self):
         """ Test login an unregistered user """

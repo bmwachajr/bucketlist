@@ -1,6 +1,7 @@
 from datetime import datetime
 from flask_testing import TestCase
 import logging
+import json
 import nose
 from application import app, db
 import config
@@ -11,7 +12,6 @@ class BaseTest(TestCase):
     """ This module setsup test udsers, bucketlistsand items used for testing the system """
     def create_app(self):
         """ create the flask application with testing configurations """
-        logging.info("Creating the application")
         app.config.from_object(config.environment_configuration['testing'])
         return app
 
@@ -50,6 +50,16 @@ class BaseTest(TestCase):
         db.session.add(item2)
         db.session.add(item3)
         db.session.commit()
+
+        # User login
+        user = {'username': 'default_user', 'password': 'password'}
+        response = self.client.post('/auth/login', data=user)
+        self.assertEqual(response.status_code, 200)
+
+        # extract auth_token
+        user_auth = json.loads(response.data)
+        auth_token = user_auth['auth_token']
+        self.headers = {'auth_token': auth_token}
 
     def tearDown(self):
         """ Drop the database after every test """
