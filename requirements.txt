@@ -47,7 +47,7 @@ pyasn1==0.2.3
 pycodestyle==2.3.1
 pycparser==2.18
 pyflakes==1.5.0
-PyJWT==1.5.2
+PyJWT==2.4.0
 python-dateutil==2.6.1
 python-editor==1.0.3
 python-openid==2.2.5
